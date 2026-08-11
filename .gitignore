@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+# Firebase yapilandirmasi - her gelistirici/ortam kendi dosyasini koyar
+google-services.json
