@@ -32,3 +32,22 @@ val Typography = Typography(
     )
     */
 )
+
+/**
+ * Detay ekranindaki okuma metni.
+ *
+ * Serif, basili kitap hissi veriyor ve uzun metinde gozu daha az yoruyor;
+ * FontFamily.Serif sistemle geldigi icin ek font dosyasi gerekmiyor.
+ * Ozel bir e-kitap fontu (or. Literata) istenirse res/font altina eklenip
+ * sadece buradaki fontFamily degistirilir.
+ *
+ * Satir araligi punto ile birlikte artirildi: 18sp metinde 24sp aralik
+ * sikisik duruyordu.
+ */
+val ReadingTextStyle = TextStyle(
+    fontFamily = FontFamily.Serif,
+    fontWeight = FontWeight.Normal,
+    fontSize = 18.sp,
+    lineHeight = 30.sp,
+    letterSpacing = 0.15.sp
+)

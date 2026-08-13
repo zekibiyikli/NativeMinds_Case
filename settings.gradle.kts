@@ -24,3 +24,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "NativeMindsCase"
 include(":app")
+include(":core")
+include(":data")

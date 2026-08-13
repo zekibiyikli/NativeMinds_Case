@@ -4,6 +4,14 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- API 30+ paket gorunurlugu: bu olmadan TextToSpeech cihazdaki
+         seslendirme motorunu bulamiyor (Sesli modu). -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
     <application
         android:name=".NativeMindsApp"
         android:allowBackup="true"
@@ -11,7 +19,6 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NativeMindsCase">
         <activity

@@ -3,6 +3,7 @@ import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.ksp)
@@ -48,16 +49,14 @@ android {
     }
 }
 
-ksp {
-    // Room migration testleri icin sema dosyalari repoya yazilir.
-    arg("room.schemaLocation", "$projectDir/schemas")
-    arg("room.generateKotlin", "true")
-}
-
 dependencies {
+    implementation(project(":core"))
+    implementation(project(":data"))
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
@@ -74,27 +73,32 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
+    // Navigation (route'lar @Serializable oldugu icin json runtime'i gerekiyor)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
+
     // Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
+    // NativeMindsApp'in Configuration.Provider'i icin HiltWorkerFactory.
     implementation(libs.androidx.hilt.work)
     ksp(libs.hilt.compiler)
-    ksp(libs.androidx.hilt.compiler)
 
-    // Room
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
+    // Paging (anasayfa feed sayfalamasi)
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
 
-    // DataStore
-    implementation(libs.androidx.datastore.preferences)
+    // Lottie (splash animasyonu; anim_book.lottie dotLottie formatinda)
+    implementation(libs.lottie.compose)
 
     // Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    // Premium sayfasindaki header GIF'i icin; Coil GIF'i cekirdekte cozmuyor.
+    implementation(libs.coil.gif)
 
-    // WorkManager
+    // WorkManager: Application'daki Configuration.Provider ve sync planlamasi icin.
     implementation(libs.androidx.work.runtime.ktx)
 
     // Media3
@@ -107,8 +111,6 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.androidx.room.testing)
-    testImplementation(libs.androidx.work.testing)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.espresso.core)

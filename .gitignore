@@ -15,3 +15,5 @@
 local.properties
 # Firebase yapilandirmasi - her gelistirici/ortam kendi dosyasini koyar
 google-services.json
+# Tasarim ekran goruntuleri ve API koleksiyonu - repoya girmez
+/ss/
