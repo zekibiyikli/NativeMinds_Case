@@ -10,6 +10,22 @@ ilerledikçe koda göre güncelledim: katmanlar ve modüller, feed → premium m
 aşıldı mı? → içerik ya da premium sayfası kapısı, cross-cutting olarak Hilt + observability.
 Şemadaki her kutunun depoda bir karşılığı var.
 
+## Demo ve çıkan build
+
+Kurulum yapmadan bakmak isteyen için ikisi de `contents/` altında:
+
+| Dosya | Ne |
+|---|---|
+| [`contents/App_Screen_Recording.mp4`](contents/App_Screen_Recording.mp4) | Uygulamanın ekran kaydı — splash'ten başlayıp feed, arama, favoriler, detay (kitap/sesli mod), kota duvarı ve premium ekranını dolaşıyor |
+| [`contents/App_Release.apk`](contents/App_Release.apk) | Kurulabilir release build (`assembleRelease` çıktısı) |
+| [`contents/Diagram.pdf`](contents/Diagram.pdf) | Mimari ve akış şeması |
+| [`contents/Google_Books_API.postman_collection.json`](contents/Google_Books_API.postman_collection.json) | API'yi keşfederken kullandığım istekler |
+
+APK `com.zekibiyikli.nativemindscase` / versionName `1.0`, minSdk 24, kendi release
+keystore'umla imzalı (V2) — Play Store'dan gelmediği için cihazda "bilinmeyen kaynak" onayı
+istenecektir. Bu build kendi anahtarlarımla derlendiği için AI özeti dâhil her şey kutudan
+çıktığı gibi çalışır; depoyu kendiniz derleyecekseniz aşağıdaki kurulum adımları geçerli.
+
 ## Ekranlar ve akışlar
 
 | Ekran | İçerik |
@@ -68,6 +84,19 @@ ANTHROPIC_API_KEY=...      # boş bırakılırsa AI özeti kapanır, Google Book
 ./gradlew :app:assembleDebug
 ./gradlew :data:testDebugUnitTest
 ```
+
+**4. Release imzalama (opsiyonel).** Keystore ve şifreler repoya girmez. Kendi anahtarınızı
+üretip bilgileri `keystore/keystore.properties` içine yazın (`keystore.properties.example`
+şablonunu kopyalayın):
+
+```bash
+keytool -genkey -v -keystore keystore/nativeminds-release.jks \
+  -keyalg RSA -keysize 2048 -validity 10000 -alias nativeminds
+./gradlew :app:assembleRelease
+```
+
+Keystore tanımlı değilse yapılandırma hata vermez, release imzasız üretilir.
+`contents/App_Release.apk` bu adımın çıktısı — imzalı hâli.
 
 Anahtarsız klonlayan biri de uygulamayı çalıştırıp gezebilir; özet üretimi kapanır, gerisi
 çalışır. API'yi keşfederken kullandığım istekler

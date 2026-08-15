@@ -10,6 +10,29 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
+/**
+ * Release imzalama bilgileri keystore/keystore.properties'ten okunur; ne dosya ne de
+ * .jks repoya girer. Keystore yoksa signingConfig hic olusturulmaz ve release imzasiz
+ * uretilir — repoyu klonlayan biri debug tarafinda takilmasin diye build patlamiyor.
+ * providers.fileContents kullaniliyor ki configuration cache dogru invalide olsun.
+ */
+val keystoreProperties: String = providers
+    .fileContents(rootProject.layout.projectDirectory.file("keystore/keystore.properties"))
+    .asText.orNull.orEmpty()
+
+fun keystoreProperty(key: String): String = keystoreProperties
+    .lineSequence()
+    .map(String::trim)
+    .firstOrNull { it.startsWith("$key=") }
+    ?.substringAfter('=')
+    ?.trim()
+    .orEmpty()
+
+val releaseStoreFile = keystoreProperty("storeFile")
+    .takeIf { it.isNotBlank() }
+    ?.let(rootProject::file)
+    ?.takeIf { it.exists() }
+
 android {
     namespace = "com.zekibiyikli.nativemindscase"
     compileSdk {
@@ -26,6 +49,17 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (releaseStoreFile != null) {
+            create("release") {
+                storeFile = releaseStoreFile
+                storePassword = keystoreProperty("storePassword")
+                keyAlias = keystoreProperty("keyAlias")
+                keyPassword = keystoreProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         debug {
             // Debug derlemelerinde mapping upload'a gerek yok, build süresini uzatıyor.
@@ -34,6 +68,12 @@ android {
             }
         }
         release {
+            // Keystore tanımlıysa imzalanır, değilse imzasız çıkar (kurulamaz ama derlenir).
+            signingConfig = signingConfigs.findByName("release")
+
+            // R8 kapalı: açmak Retrofit/kotlinx.serialization/Room tarafında keep kuralı
+            // gerektirebiliyor ve gerçek cihazda baştan sona test edilmeden açılmamalı.
+            // Debug'a göre asıl hız farkı zaten debuggable=false olmasından geliyor.
             optimization {
                 enable = false
             }

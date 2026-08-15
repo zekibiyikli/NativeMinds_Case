@@ -9,6 +9,8 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
+# assembleRelease ciktisi - APK'nin paylasilan kopyasi contents/ altinda duruyor
+/app/release/
 /captures
 .externalNativeBuild
 .cxx
@@ -17,3 +19,7 @@ local.properties
 google-services.json
 # Tasarim ekran goruntuleri ve API koleksiyonu - repoya girmez
 /ss/
+# Release imzalama - anahtar deposu ve sifreler repoya girmez
+# (keystore.properties sablonu repoda kalir)
+/keystore/*.jks
+/keystore/keystore.properties
