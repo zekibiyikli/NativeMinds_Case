@@ -1,0 +1,118 @@
+{
+  "info": {
+    "name": "Google Books API",
+    "description": "Kitap uygulaması için gerekli temel endpointler: kategori ile kitap arama, direkt kitap/anahtar kelime arama, kitap detayları (özet dahil). Google Books API'de sabit bir 'kategori listesi' endpoint'i olmadığı için kategori araması 'subject:' filtresi ile yapılır; kategori isimlerini (Fiction, Science, History, Biography, Fantasy, vb.) kendi tarafında sabit bir liste olarak tutman gerekir.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://www.googleapis.com/books/v1"
+    },
+    {
+      "key": "apiKey",
+      "value": "YOUR_GOOGLE_BOOKS_API_KEY",
+      "description": "Google Cloud Console'dan aldığın, Books API'ye kısıtlanmış API key"
+    },
+    {
+      "key": "volumeId",
+      "value": "zyTCAlFPjgYC",
+      "description": "Örnek volume ID (kitap detayı için). Search sonuçlarından gelen 'id' alanı buraya set edilir."
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Kitap Ara (Direkt / Anahtar Kelime)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/volumes?q={{query}}&maxResults=20&startIndex=0&langRestrict=tr&key={{apiKey}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["volumes"],
+          "query": [
+            { "key": "q", "value": "{{query}}", "description": "Aranacak kelime, başlık, yazar vb." },
+            { "key": "maxResults", "value": "20", "description": "Sayfa başına sonuç sayısı (max 40)" },
+            { "key": "startIndex", "value": "0", "description": "Sayfalama için başlangıç index'i" },
+            { "key": "langRestrict", "value": "tr", "description": "Opsiyonel: sonuçları dile göre filtreler" },
+            { "key": "key", "value": "{{apiKey}}" }
+          ]
+        },
+        "description": "Kullanıcının arama çubuğuna yazdığı serbest metin ile kitap arar (Search / Search Detail ekranları). q parametresine intitle:, inauthor:, isbn: gibi öneki de ekleyebilirsin, örn: q=intitle:dune"
+      }
+    },
+    {
+      "name": "2. Kategoriye Göre Kitap Ara (Subject Filter)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/volumes?q=subject:{{category}}&maxResults=20&startIndex=0&orderBy=relevance&key={{apiKey}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["volumes"],
+          "query": [
+            { "key": "q", "value": "subject:{{category}}", "description": "Kategori adı, örn: fiction, science, history, fantasy, biography" },
+            { "key": "maxResults", "value": "20" },
+            { "key": "startIndex", "value": "0" },
+            { "key": "orderBy", "value": "relevance", "description": "relevance | newest" },
+            { "key": "key", "value": "{{apiKey}}" }
+          ]
+        },
+        "description": "Ana sayfa / Search ekranındaki kategori chip'lerine (Subject1, Subject2...) tıklanınca çağrılır. Not: Google Books'ta sabit bir 'tüm kategorileri listele' endpoint'i yoktur; category değerini kendi sabit listenden (Fiction, Non-fiction, Science, History, Biography, Fantasy, Romance, vb.) gönderirsin."
+      }
+    },
+    {
+      "name": "2b. Kategori + Anahtar Kelime Birlikte",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/volumes?q={{query}}+subject:{{category}}&maxResults=20&key={{apiKey}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["volumes"],
+          "query": [
+            { "key": "q", "value": "{{query}}+subject:{{category}}" },
+            { "key": "maxResults", "value": "20" },
+            { "key": "key", "value": "{{apiKey}}" }
+          ]
+        },
+        "description": "Search Detail ekranı için: kullanıcı bir kategori içindeyken aynı zamanda arama da yapıyorsa (query + subject birleşik filtre)."
+      }
+    },
+    {
+      "name": "3. Kitap Detayı (Özet Dahil)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/volumes/{{volumeId}}?key={{apiKey}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["volumes", "{{volumeId}}"],
+          "query": [
+            { "key": "key", "value": "{{apiKey}}" }
+          ]
+        },
+        "description": "Detail (Text/Audio) ekranı için tek kitabın tam detayını döner: volumeInfo.description (özet), title, authors, categories, pageCount, imageLinks (kapak), averageRating, previewLink, ve accessInfo.viewability (FULL/PARTIAL/NO_PAGES - kitabın okunabilir olup olmadığını buradan kontrol edersin)."
+      }
+    },
+    {
+      "name": "4. Rastgele / Öne Çıkan Kitap (Workaround)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/volumes?q=subject:{{category}}&maxResults=40&startIndex={{randomOffset}}&key={{apiKey}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["volumes"],
+          "query": [
+            { "key": "q", "value": "subject:{{category}}" },
+            { "key": "maxResults", "value": "40" },
+            { "key": "startIndex", "value": "{{randomOffset}}", "description": "Client tarafında rastgele üretilen bir sayı (örn. 0-200 arası), sonuç setinden rastgele seçim yapmak için" },
+            { "key": "key", "value": "{{apiKey}}" }
+          ]
+        },
+        "description": "Google Books'ta da native bir 'random' endpoint'i yok. Ana sayfadaki rastgele kitap kartı için: rastgele bir kategori seç, rastgele bir startIndex ile sorgula, dönen listeden rastgele bir eleman göster."
+      }
+    }
+  ]
+}
