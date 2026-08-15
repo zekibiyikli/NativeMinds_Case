@@ -57,6 +57,10 @@ import com.zekibiyikli.nativemindscase.R
 import com.zekibiyikli.nativemindscase.core.analytics.TrackScreenView
 import com.zekibiyikli.nativemindscase.enums.PremiumPlan
 
+/** Header gorseli assets altinda; Coil android_asset yolunu dogrudan cozuyor. */
+private const val HEADER_GIF_URI = "file:///android_asset/gif_book.gif"
+private const val HEADER_HEIGHT_DP = 340
+
 /**
  * Tam ekran satis sayfasi: ustte kenardan kenara animasyonlu header, altinda
  * faydalar, plan secimi ve tek bir aksiyon butonu.
@@ -429,8 +433,3 @@ private fun Footer(modifier: Modifier = Modifier) {
         )
     }
 }
-
-/** Header gorseli assets altinda; Coil android_asset yolunu dogrudan cozuyor. */
-private const val HEADER_GIF_URI = "file:///android_asset/gif_book.gif"
-
-private const val HEADER_HEIGHT_DP = 340

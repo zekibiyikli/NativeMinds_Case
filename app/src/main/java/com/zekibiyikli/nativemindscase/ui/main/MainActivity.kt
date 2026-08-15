@@ -1,4 +1,4 @@
-package com.zekibiyikli.nativemindscase
+package com.zekibiyikli.nativemindscase.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -19,7 +19,8 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     /** Banner tum ekranlarin uzerinde tek noktadan gosteriliyor. */
-    @Inject lateinit var bannerController: NotificationBannerController
+    @Inject
+    lateinit var bannerController: NotificationBannerController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

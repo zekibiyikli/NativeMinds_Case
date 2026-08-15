@@ -67,6 +67,12 @@ import com.zekibiyikli.nativemindscase.ui.components.CoverFallback
 import com.zekibiyikli.nativemindscase.ui.components.OutcomeContent
 import com.zekibiyikli.nativemindscase.ui.theme.ReadingTextStyle
 
+
+private const val ENTER_DURATION_MS = 260
+private const val EXIT_DURATION_MS = 180
+/** Kayma mesafesi genisligin bu kesri kadar; tam ekran kaymasi sert duruyor. */
+private const val SLIDE_FRACTION = 6
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
@@ -435,9 +441,3 @@ private fun AudioContent(
         }
     }
 }
-
-private const val ENTER_DURATION_MS = 260
-private const val EXIT_DURATION_MS = 180
-
-/** Kayma mesafesi genisligin bu kesri kadar; tam ekran kaymasi sert duruyor. */
-private const val SLIDE_FRACTION = 6

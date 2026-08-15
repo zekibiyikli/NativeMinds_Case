@@ -13,12 +13,6 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-data class UserPreferences(
-    val darkThemeEnabled: Boolean = false,
-    val onboardingCompleted: Boolean = false,
-    val userId: String? = null
-)
-
 /**
  * DataStore uzerinden kullanici tercihleri. Okuma tarafi Flow,
  * yazma tarafi suspend — SharedPreferences'in aksine main thread'i bloklamaz.

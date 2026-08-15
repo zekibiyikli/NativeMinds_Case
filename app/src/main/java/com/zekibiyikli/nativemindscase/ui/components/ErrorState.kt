@@ -21,13 +21,6 @@ import com.zekibiyikli.nativemindscase.core.result.AppException
  * Hata turunu kullanicinin ne yapacagini bilecegi bir mesaja cevirir.
  * Tek yerde durmali; hem tam ekran hata hem sayfalama hatasi bunu kullaniyor.
  */
-@StringRes
-fun Throwable.messageRes(): Int = when (this) {
-    is AppException.NoConnection -> R.string.error_network
-    is AppException.RateLimited -> R.string.error_rate_limited
-    is AppException.InvalidApiKey -> R.string.error_invalid_api_key
-    else -> R.string.error_generic
-}
 
 /** Ekranda gosterilecek icerik yokken kullanilan tam ekran hata durumu. */
 @Composable
@@ -52,4 +45,12 @@ fun ErrorState(
             Text(stringResource(R.string.retry))
         }
     }
+}
+
+@StringRes
+fun Throwable.messageRes(): Int = when (this) {
+    is AppException.NoConnection -> R.string.error_network
+    is AppException.RateLimited -> R.string.error_rate_limited
+    is AppException.InvalidApiKey -> R.string.error_invalid_api_key
+    else -> R.string.error_generic
 }

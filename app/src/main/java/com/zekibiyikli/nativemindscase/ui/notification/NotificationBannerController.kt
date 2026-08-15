@@ -10,15 +10,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Metin, string resource olarak tasiniyor: ViewModel'ler dile bagimli
- * hale gelmesin, cevrilmis metni Compose tarafi cozsun.
- */
-data class BannerMessage(
-    @StringRes val textRes: Int,
-    val type: BannerType
-)
-
-/**
  * Uygulama genelinde tek banner sirasi. ViewModel'ler buraya mesaj birakir,
  * [TopNotificationBannerHost] gosterir.
  *

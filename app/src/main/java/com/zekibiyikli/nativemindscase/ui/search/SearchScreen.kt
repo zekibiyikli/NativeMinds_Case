@@ -36,6 +36,11 @@ import com.zekibiyikli.nativemindscase.data.content.model.ContentItem
 import com.zekibiyikli.nativemindscase.data.content.model.Subject
 import com.zekibiyikli.nativemindscase.ui.components.ContentCard
 
+private val CHIP_SPACING = 4.dp
+private val FEATURED_CARD_WIDTH = 104.dp
+/** Yukleme gostergesi seridin yerini tutsun, liste gelince ziplama olmasin. */
+private val FEATURED_ROW_HEIGHT = 156.dp
+
 @Composable
 fun SearchScreen(
     onSearch: (String) -> Unit,
@@ -180,9 +185,3 @@ private fun SectionTitle(text: String, modifier: Modifier = Modifier) {
         modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)
     )
 }
-
-private val CHIP_SPACING = 4.dp
-private val FEATURED_CARD_WIDTH = 104.dp
-
-/** Yukleme gostergesi seridin yerini tutsun, liste gelince ziplama olmasin. */
-private val FEATURED_ROW_HEIGHT = 156.dp

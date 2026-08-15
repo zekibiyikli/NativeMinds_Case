@@ -29,12 +29,6 @@ import javax.inject.Inject
  * Feed [feed] akisinda ayri tasiniyor: Paging kendi yukleme/hata
  * durumunu tasidigi icin [HomeUiState] icine sigmaz.
  */
-data class HomeUiState(
-    val subjects: List<Subject> = emptyList(),
-    val selectedSubjectId: String = "",
-    val isPremium: Boolean = false,
-    val remainingFreeReads: Int = 0
-)
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
